@@ -70,3 +70,11 @@ export async function deletePipeline(id: string): Promise<boolean> {
   )
   return (result.rowCount ?? 0) > 0
 }
+
+export async function getPipelineBySourceToken(sourceToken: string): Promise<Pipeline | null> {
+  const result = await db.query(
+    'SELECT * FROM pipelines WHERE source_token = $1',
+    [sourceToken]
+  ) as QueryResult<Pipeline>
+  return result.rows[0] ?? null
+}

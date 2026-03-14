@@ -3,6 +3,7 @@ import { errorHandler } from './middleware/errorHandler'
 import { logger } from '../lib/logger'
 import { db } from '../db/client'
 import pipelinesRouter from './routes/pipelines.routes'
+import webhooksRouter from './routes/webhooks.routes'
 
 // Verify DB connection at startup
 void db.query('SELECT 1')
@@ -26,6 +27,9 @@ app.get('/health', async (req, res, next) => {
 
 // Pipelines CRUD API
 app.use('/pipelines', pipelinesRouter)
+
+// Webhook ingestion
+app.use('/webhooks', webhooksRouter)
 
 // error handler — دايما آخر شي
 app.use(errorHandler)

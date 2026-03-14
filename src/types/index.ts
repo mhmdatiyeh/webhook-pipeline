@@ -26,3 +26,16 @@ export interface UpdatePipelineInput {
   subscribers?: string[]
   is_active?: boolean
 }
+
+export type JobStatus = 'pending' | 'processing' | 'done' | 'failed' | 'skipped'
+
+export interface Job {
+  id: string
+  pipeline_id: string
+  status: JobStatus
+  payload: Record<string, unknown>
+  result: Record<string, unknown> | null
+  error: string | null
+  created_at: Date
+  processed_at: Date | null
+}
