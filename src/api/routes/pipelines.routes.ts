@@ -1,12 +1,18 @@
-import { Router } from 'express'
-import { getAll, getOne, create, update, remove } from '../controllers/pipelines.controller'
+import { Router } from 'express';
+import {
+  getAll,
+  getOne,
+  create,
+  update,
+  remove,
+} from '../controllers/pipelines.controller';
 
-const router = Router()
+const router = Router();
 
-router.get('/', getAll)
-router.get('/:id', getOne)
-router.post('/', create)
-router.put('/:id', update)
-router.delete('/:id', remove)
+router.get('/', getAll);
+router.get('/:id', getOne);
+router.post('/', create);
+router.put('/:id', update);
+router.delete('/:id', remove);
 
-export default router
+export default router;

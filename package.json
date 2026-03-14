@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
     "dev": "nodemon --exec ts-node src/api/server.ts",
     "build": "tsc",
     "start": "node dist/api/server.js",
-    "worker": "nodemon --exec ts-node src/worker/worker.ts"
+    "worker": "nodemon --exec ts-node src/worker/worker.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "repository": {
     "type": "git",
@@ -31,8 +36,17 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.5.0",
     "@types/pg": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "@vitest/ui": "^2.0.0",
+    "eslint": "^9.6.1",
+    "eslint-plugin-security": "^4.0.0",
+    "jsdom": "^24.0.0",
     "nodemon": "^3.1.14",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vitest": "^2.0.0"
   }
 }

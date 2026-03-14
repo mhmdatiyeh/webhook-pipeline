@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import { ingest } from '../controllers/webhooks.controller'
+import { Router } from 'express';
+import { ingest } from '../controllers/webhooks.controller';
 
-const router = Router()
+const router = Router();
 
-router.post('/:sourceToken', ingest)
+router.post('/:sourceToken', ingest);
 
-export default router
+export default router;

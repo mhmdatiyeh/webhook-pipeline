@@ -6,12 +6,12 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: webhook_pipeline
     ports:
-      - "5433:5432"
+      - '5433:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./src/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 5s
       timeout: 5s
       retries: 5
@@ -19,7 +19,7 @@ services:
   api:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/webhook_pipeline
       PORT: 3000
@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   worker:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.worker
     environment:
