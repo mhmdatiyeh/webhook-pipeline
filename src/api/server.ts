@@ -4,6 +4,7 @@ import { logger } from '../lib/logger'
 import { db } from '../db/client'
 import pipelinesRouter from './routes/pipelines.routes'
 import webhooksRouter from './routes/webhooks.routes'
+import jobsRouter from './routes/jobs.routes'
 
 // Verify DB connection at startup
 void db.query('SELECT 1')
@@ -30,6 +31,9 @@ app.use('/pipelines', pipelinesRouter)
 
 // Webhook ingestion
 app.use('/webhooks', webhooksRouter)
+
+// Jobs tracking
+app.use('/jobs', jobsRouter)
 
 // error handler — دايما آخر شي
 app.use(errorHandler)

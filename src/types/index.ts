@@ -39,3 +39,18 @@ export interface Job {
   created_at: Date
   processed_at: Date | null
 }
+
+export interface DeliveryAttempt {
+  id: string
+  job_id: string
+  subscriber_url: string
+  status_code: number | null
+  success: boolean
+  attempt_number: number
+  error_message: string | null
+  attempted_at: Date
+}
+
+export interface JobWithDeliveries extends Job {
+  deliveries: DeliveryAttempt[]
+}

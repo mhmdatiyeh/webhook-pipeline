@@ -87,3 +87,15 @@ export async function updateJobStatus(
     throw err
   }
 }
+
+export async function getDeliveryAttemptsForJob(jobId: string): Promise<any[]> {
+  try {
+    const result = await db.query(
+      'SELECT * FROM delivery_attempts WHERE job_id = $1 ORDER BY attempted_at ASC',
+      [jobId]
+    )
+    return result.rows
+  } catch (err) {
+    throw err
+  }
+}
