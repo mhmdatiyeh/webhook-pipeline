@@ -6,9 +6,12 @@ import pipelinesRouter from './routes/pipelines.routes'
 import webhooksRouter from './routes/webhooks.routes'
 
 // Verify DB connection at startup
-void db.query('SELECT 1')
+void db
+  .query('SELECT 1')
   .then(() => logger.info('Database connection verified'))
-  .catch((err: Error) => logger.error('Database connection failed', { message: err.message }))
+  .catch((err: Error) =>
+    logger.error('Database connection failed', { message: err.message })
+  )
 
 const app = express()
 const PORT = process.env.PORT || 3000

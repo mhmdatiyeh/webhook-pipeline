@@ -3,26 +3,34 @@ import { db } from '../db/client'
 import { Pipeline, CreatePipelineInput, UpdatePipelineInput } from '../types'
 
 export async function getAllPipelines(): Promise<Pipeline[]> {
-  const result = await db.query('SELECT * FROM pipelines ORDER BY created_at DESC') as QueryResult<Pipeline>
+  const result = (await db.query(
+    'SELECT * FROM pipelines ORDER BY created_at DESC'
+  )) as QueryResult<Pipeline>
   return result.rows
 }
 
 export async function getPipelineById(id: string): Promise<Pipeline | null> {
-  const result = await db.query(
-    'SELECT * FROM pipelines WHERE id = $1',
-    [id]
-  ) as QueryResult<Pipeline>
+  const result = (await db.query('SELECT * FROM pipelines WHERE id = $1', [
+    id,
+  ])) as QueryResult<Pipeline>
   return result.rows[0] ?? null
 }
 
-export async function createPipeline(input: CreatePipelineInput): Promise<Pipeline> {
+export async function createPipeline(
+  input: CreatePipelineInput
+): Promise<Pipeline> {
   const { name, action_type, subscribers, action_config = {} } = input
-  const result = await db.query(
+  const result = (await db.query(
     `INSERT INTO pipelines (name, action_type, subscribers, action_config)
      VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [name, action_type, JSON.stringify(subscribers), JSON.stringify(action_config)]
-  ) as QueryResult<Pipeline>
+    [
+      name,
+      action_type,
+      JSON.stringify(subscribers),
+      JSON.stringify(action_config),
+    ]
+  )) as QueryResult<Pipeline>
   return result.rows[0]
 }
 
@@ -59,22 +67,21 @@ export async function updatePipeline(
     RETURNING *
   `
 
-  const result = await db.query(query, values) as QueryResult<Pipeline>
+  const result = (await db.query(query, values)) as QueryResult<Pipeline>
   return result.rows[0] ?? null
 }
 
 export async function deletePipeline(id: string): Promise<boolean> {
-  const result = await db.query(
-    'DELETE FROM pipelines WHERE id = $1',
-    [id]
-  )
+  const result = await db.query('DELETE FROM pipelines WHERE id = $1', [id])
   return (result.rowCount ?? 0) > 0
 }
 
-export async function getPipelineBySourceToken(sourceToken: string): Promise<Pipeline | null> {
-  const result = await db.query(
+export async function getPipelineBySourceToken(
+  sourceToken: string
+): Promise<Pipeline | null> {
+  const result = (await db.query(
     'SELECT * FROM pipelines WHERE source_token = $1',
     [sourceToken]
-  ) as QueryResult<Pipeline>
+  )) as QueryResult<Pipeline>
   return result.rows[0] ?? null
 }

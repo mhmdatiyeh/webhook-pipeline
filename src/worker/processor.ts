@@ -22,7 +22,7 @@ export async function processJob(job: Job, pipeline: Pipeline): Promise<void> {
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : String(err)
     await updateJobStatus(job.id, 'failed', null, errorMsg)
-    
+
     logger.error(`Job ${job.id} failed`, {
       pipeline_id: pipeline.id,
       job_id: job.id,
