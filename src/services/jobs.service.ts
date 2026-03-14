@@ -1,6 +1,6 @@
 import { QueryResult } from 'pg'
 import { db } from '../db/client'
-import { Job } from '../types'
+import { Job, JobStatus } from '../types'
 
 export async function createJob(
   pipelineId: string,
@@ -37,6 +37,52 @@ export async function getAllJobs(): Promise<Job[]> {
       'SELECT * FROM jobs ORDER BY created_at DESC'
     ) as QueryResult<Job>
     return result.rows
+  } catch (err) {
+    throw err
+  }
+}
+
+export async function getPendingJob(): Promise<Job | null> {
+  try {
+    const result = await db.query(
+      `UPDATE jobs
+       SET status = 'processing'
+       WHERE id = (
+         SELECT id FROM jobs
+         WHERE status = 'pending'
+         ORDER BY created_at ASC
+         LIMIT 1
+         FOR UPDATE SKIP LOCKED
+       )
+       RETURNING *`
+    ) as QueryResult<Job>
+    return result.rows[0] ?? null
+  } catch (err) {
+    throw err
+  }
+}
+
+export async function updateJobStatus(
+  id: string,
+  status: JobStatus,
+  resultRecord?: Record<string, unknown> | null,
+  error?: string | null
+): Promise<void> {
+  try {
+    await db.query(
+      `UPDATE jobs
+       SET status = $2,
+           result = $3,
+           error = $4,
+           processed_at = NOW()
+       WHERE id = $1`,
+      [
+        id,
+        status,
+        resultRecord ? JSON.stringify(resultRecord) : null,
+        error ?? null,
+      ]
+    )
   } catch (err) {
     throw err
   }
